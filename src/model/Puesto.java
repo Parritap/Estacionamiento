@@ -16,6 +16,11 @@ public class Puesto {
         this.tipoVehiculo = tipoVehiculo;
     }
 
+    public Puesto (String num, Parqueadero parqueadero){
+        this.num = num;
+        this.parqueadero = parqueadero;
+    }
+
     /**
      * Constructor vacío.
      */

@@ -8,7 +8,10 @@ public class Vehiculo {
     private Parqueadero parqueadero;
     private Enum <TipoVehiculo> tipoVehiculo;
 
-    public Vehiculo(String placa, String modelo, Propietario propietario, Parqueadero parqueadero, Enum<TipoVehiculo> tipoVehiculo) {
+
+    //-----------------------------------Getters and Setters-----------------------------------------------------
+
+    public Vehiculo(String placa, String modelo, Propietario propietario, Enum<TipoVehiculo> tipoVehiculo, Parqueadero parqueadero) {
         this.placa = placa;
         this.modelo = modelo;
         this.propietario = propietario;
@@ -62,6 +65,9 @@ public class Vehiculo {
         this.tipoVehiculo = tipoVehiculo;
     }
 
+
+    //-------------------------------------------------------------------------------------------------------
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,4 +104,6 @@ public class Vehiculo {
                 ", tipoVehiculo=" + tipoVehiculo +
                 '}';
     }
+
+    //------------------------------------------------------------------------------------------------------------
 }
