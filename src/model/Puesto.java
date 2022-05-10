@@ -8,12 +8,20 @@ public class Puesto {
     private Parqueadero parqueadero;
     private TipoVehiculo tipoVehiculo;
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Constructores
     public Puesto(String num, String estado, Double precio, Parqueadero parqueadero, TipoVehiculo tipoVehiculo) {
         this.num = num;
         this.estado = estado;
         this.precio = precio;
         this.parqueadero = parqueadero;
         this.tipoVehiculo = tipoVehiculo;
+    }
+
+    public Puesto (String num, Parqueadero parqueadero, TipoVehiculo tipoVehiculo){
+        this.num = num;
+        this.parqueadero = parqueadero;
     }
 
     public Puesto (String num, Parqueadero parqueadero){
@@ -27,6 +35,9 @@ public class Puesto {
     public Puesto() {
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Getters & Setters.
     public String getNum() {
         return num;
     }

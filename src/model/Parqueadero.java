@@ -126,7 +126,38 @@ public class Parqueadero {
                 '}';
     }
 
-    //  PUNTO 1.
+    //  PUNTO 1.--------------------------------------------------------------------------------
+
+    public Puesto[][] generarPuestos(int cantidadColumnas) throws Exception {
+
+        Puesto[][] matrizPuestos = new Puesto[2][cantidadColumnas];
+
+        if (cantidadColumnas < 1)
+            throw new Exception("La cantidad de columnas no puede ser menor que 1");
+
+
+        for (int i = 0; i < matrizPuestos.length; i++) {
+
+            TipoVehiculo tipoVehiculo;
+            if (i == 0) { //Si estamos en la primera fila, entonces a sus puestos se les asigna el tipo de Vehiculo carro
+                tipoVehiculo = TipoVehiculo.MOTO;
+            } else { //De lo contario se les asigna el tipo de vehiculo Moto.
+                tipoVehiculo = TipoVehiculo.CARRO;
+            }
+
+
+            //Instanciamos los puestos del parqueadero, cosa que no haya uno solo nulo.
+            for (int j = 0; j < matrizPuestos[i].length; j++) {
+                //Se asigna el número al puesto, como tambien su parqueadero y el tipo de vehículo que va a alojar.
+                matrizPuestos[i][j] = new Puesto("" + i + j + "", this, tipoVehiculo);
+            }
+        }
+
+        return matrizPuestos;
+    }
+
+
+
 
     /**
      * Método que genera la matriz de puestos.
@@ -137,7 +168,7 @@ public class Parqueadero {
      * @param filas    Cantidad de filas.
      * @return Una matriz de puestos con numero asignadas al parqueadero actual.
      */
-    public Puesto[][] generarPuestos(int columnas, int filas) {
+    public Puesto[][] generarPuestosV2(int columnas, int filas) {
 
         //Declaramos el tamaño de los puestos.
         Puesto[][] puestos = new Puesto[columnas][filas];
@@ -174,56 +205,59 @@ public class Parqueadero {
     }
 
 
-
     // PUNTO 2
-    public void crearVehiculo (String placa, String modelo, Propietario propietario, TipoVehiculo tipoVehiculo) throws StringException {
+    public void crearVehiculo (){
+
+    }
+
+
+
+    public void crearVehiculo(String placa, String modelo, Propietario propietario, TipoVehiculo tipoVehiculo) throws StringException {
 
         //El primaryKey de Vehículo es la placa
         if (placa == null)
             throw new StringException("LA PLACA PASADA ES NULA");
 
-        String auxModelo = Utils.setearString (modelo);
+        String auxModelo = Utils.setearString(modelo);
 
         Vehiculo vehiculo = new Vehiculo(placa, auxModelo, propietario, tipoVehiculo, this);
 
         listaVehiculos.add(vehiculo);
     }
 
-    public Vehiculo buscarVehiculo (String placa){
+    public Vehiculo buscarVehiculo(String placa) {
 
-        for ( Vehiculo vehiculo: listaVehiculos) {
-            if (vehiculo.getPlaca()!= null && vehiculo.getPlaca().equals(placa))
+        for (Vehiculo vehiculo : listaVehiculos) {
+            if (vehiculo.getPlaca() != null && vehiculo.getPlaca().equals(placa))
                 return vehiculo;
         }
         return null;
     }
 
-    public void eliminarVehiculo (String placa){
+    public void eliminarVehiculo(String placa) {
 
         boolean bool = false; //Este bool se utiliza para romper el ciclo una vez hayamos encontrado el vehículo a eliminar.
 
         for (int i = 0; i < listaVehiculos.size() && !bool; i++) {
-            if (listaVehiculos.get(i).getPlaca().equals(placa)){
+            if (listaVehiculos.get(i).getPlaca().equals(placa)) {
                 listaVehiculos.remove(i);
                 bool = true;
             }
         }
     }
 
-    public double obtenerSumaTotalesFila (int index){
+    public double obtenerSumaTotalesFila(int index) {
 
-        double sumaTotal =0;
+        double sumaTotal = 0;
 
 
         for (RegistroParqueo registro : listaRegistroParqueo) {
-            if (registro.getPuesto().getNum().charAt(0) == index){
+            if (registro.getPuesto().getNum().charAt(0) == index) {
                 sumaTotal += registro.getTotal();
             }
         }
-     return sumaTotal;
+        return sumaTotal;
     }
-
-
 
 
 }
