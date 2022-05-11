@@ -148,8 +148,8 @@ public class Parqueadero {
 
             //Instanciamos los puestos del parqueadero, cosa que no haya uno solo nulo.
             for (int j = 0; j < matrizPuestos[i].length; j++) {
-                //Se asigna el número al puesto, como tambien su parqueadero y el tipo de vehículo que va a alojar.
-                matrizPuestos[i][j] = new Puesto("" + i + j + "", this, tipoVehiculo);
+                //Se asigna el número al puesto, como tambien su parqueadero y el tipo de vehículo que va a alojar que declaramos anteriormente.
+                matrizPuestos[i][j] = new Puesto("" + i + j + "", this, tipoVehiculo); //Notese que concatenemos en un String los index 'i' y 'j' como números para hacer la tarea de buscar un puesto mucho más fácil.
             }
         }
 
@@ -206,23 +206,26 @@ public class Parqueadero {
 
 
     // PUNTO 2
-    public void crearVehiculo (){
-
-    }
-
-
-
-    public void crearVehiculo(String placa, String modelo, Propietario propietario, TipoVehiculo tipoVehiculo) throws StringException {
-
-        //El primaryKey de Vehículo es la placa
-        if (placa == null)
-            throw new StringException("LA PLACA PASADA ES NULA");
-
-        String auxModelo = Utils.setearString(modelo);
-
-        Vehiculo vehiculo = new Vehiculo(placa, auxModelo, propietario, tipoVehiculo, this);
-
-        listaVehiculos.add(vehiculo);
+    public String crearVehiculo(Vehiculo nuevoVehiculo,String identificacionPropietario)throws VehiculoException {
+        String resultado 			= "";
+        Vehiculo vehiculoEncontrado = null;
+        Propietario propietario 	= null;
+        // verificar si existe el vehiculo
+        vehiculoEncontrado = buscarVehiculo(nuevoVehiculo.getPlaca()); //Primero buscamos si el vehiculo ya existe.
+        if(vehiculoEncontrado == null){ //De ser null, significa que el vehículo no fue encontrado, y podemos pasara crearlo.
+            // verificar si existe el propietario
+            propietario = obtenerPropietario(identificacionPropietario);
+            if(propietario == null){
+                throw new VehiculoException("NO existe un propietario para este vehiculo");
+            }
+            else{
+                listaVehiculos.add(nuevoVehiculo);
+                resultado = "Vehiculo Registrado";
+            }
+        }else{
+            throw new VehiculoException("Este vehiculo ya se encunttra registrado");
+        }
+        return resultado;
     }
 
     public Vehiculo buscarVehiculo(String placa) {
@@ -258,6 +261,4 @@ public class Parqueadero {
         }
         return sumaTotal;
     }
-
-
 }
