@@ -2,11 +2,8 @@ package model;
 
 import Exceptions.*;
 
-import java.awt.*;
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class Parqueadero {
 
@@ -405,7 +402,6 @@ public class Parqueadero {
         return listaPropietarios;
     }
 
-
     //PUNTO 8
 /*
    Obtener una matriz con las siguientes condiciones: dos filas una fila para carros y otra para motos :
@@ -413,277 +409,140 @@ public class Parqueadero {
    en la segunda fila los vehículos de tipo moto que han parqueado más de tres veces en el parqueadero.
  */
 
-    private Vehiculo[][] obtenerMatrizCondicionPunto7() throws Exception {
+    public Vehiculo[][] obtenerMatrizCondicionPunto7() throws Exception {
 
         Vehiculo[][] matrix = new Vehiculo[2][];
 
-        Vehiculo[] arregloCarros = new Vehiculo[obtenerNumCarrosCond7()];
-        Vehiculo[] arregloMotos = new Vehiculo[obtenerNumMotosCond7()];
+        Vehiculo[] arregloCarros = (Vehiculo[]) obtenerListaCarrosCond8().toArray();
+        Vehiculo[] arregloMotos = (Vehiculo[]) obtenerListaMotosCond8().toArray();
 
-        arregloCarros = obtenerListaCarrosCondicionPunto7 ();
-        arregloMotos  = obtenerListaMotosCondicionPunto7 ();
-
+        matrix[0] = arregloCarros;
+        matrix[1] = arregloMotos;
 
         return matrix;
     }
 
-    private Vehiculo[] obtenerListaMotosCondicionPunto7() throws Exception {
-        ArrayList<Vehiculo> listaRepetidos = new ArrayList<Vehiculo>();
+    private ArrayList<Vehiculo> obtenerListaCarrosCond8() {
 
-        for (int i = 0; i < listaRegistroParqueo.size(); i++) {
+        ArrayList<Vehiculo> listaCarros = new ArrayList<>();
 
-            int contador = 1; //El contador inicia en uno porque siempre hay al menos una instancia del vehículo a comparar dentro del registro
-            //incluso si esta instancia es nula (pues, pese a ello, existe).
-            Vehiculo auxA = listaRegistroParqueo.get(i).getVehiculo();
+        for (Vehiculo vehiculo:
+             obtenerListaVehiculosCondicion()) {
 
-
-
-            if (!existeVehiculoEnLista(listaRepetidos, auxA)) { //verificamos que ese vehículo NO se encuentre ya dentro de la lista de repetidos
-
-                for (int j = 0; j < listaRegistroParqueo.size(); j++) {
-                    Vehiculo auxB = listaRegistroParqueo.get(i).getVehiculo();
-
-                    if (j != i) { //No podemos verificar un vehiculo de la posición X con su misma posición X, porque, aunque no esté repetido, se compará de forma innecesaria, y nos
-                        // Engañará, diciéndonos que está "repetido".
-
-                        if (auxA != null && auxB != null) {
-                            if (auxA.getTipoVehiculo()== TipoVehiculo.MOTO && auxB.getTipoVehiculo() == TipoVehiculo.MOTO) { //verifica que los vehículos sean CARROS
-                                if (auxA.getPlaca() != null && auxB.getPlaca() != null) {
-
-                                    if (auxA.equals(auxB)) {
-                                        contador++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if (vehiculo.getTipoVehiculo() == TipoVehiculo.CARRO) {
+                listaCarros.add(vehiculo);
             }
-
-            if (contador > 3) //Si hay más de 2 vehiculos iguales (esto es, con la misma placa), entonces añadir a lista de repetidos.
-                listaRepetidos.add(auxA);
         }
 
-        return Utils.arrayList_to_Array(listaRepetidos);
+        return listaCarros;
     }
 
-    private Vehiculo[] obtenerListaCarrosCondicionPunto7() throws Exception {
-        ArrayList<Vehiculo> listaRepetidos = new ArrayList<Vehiculo>();
+    private ArrayList<Vehiculo> obtenerListaMotosCond8(){
 
-        for (int i = 0; i < listaRegistroParqueo.size(); i++) {
+        ArrayList<Vehiculo> listaMotos = new ArrayList<>();
 
-            int contador = 1; //El contador inicia en uno porque siempre hay al menos una instancia del vehículo a comparar dentro del registro
-            //incluso si esta instancia es nula (pues, pese a ello, existe).
-            Vehiculo auxA = listaRegistroParqueo.get(i).getVehiculo();
+        for (Vehiculo vehiculo:
+                obtenerListaVehiculosCondicion()) {
 
-
-
-            if (!existeVehiculoEnLista(listaRepetidos, auxA)) { //verificamos que ese vehículo NO se encuentre ya dentro de la lista de repetidos
-
-                for (int j = 0; j < listaRegistroParqueo.size(); j++) {
-                    Vehiculo auxB = listaRegistroParqueo.get(i).getVehiculo();
-
-                    if (j != i) { //No podemos verificar un vehiculo de la posición X con su misma posición X, porque, aunque no esté repetido, se compará de forma innecesaria, y nos
-                        // Engañará, diciéndonos que está "repetido".
-
-                        if (auxA != null && auxB != null) {
-                            if (auxA.getTipoVehiculo()== TipoVehiculo.CARRO && auxB.getTipoVehiculo() == TipoVehiculo.CARRO) { //verifica que los vehículos sean CARROS
-                                if (auxA.getPlaca() != null && auxB.getPlaca() != null) {
-
-                                    if (auxA.equals(auxB)) {
-                                        contador++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if (vehiculo.getTipoVehiculo() == TipoVehiculo.MOTO) {
+                listaMotos.add(vehiculo);
             }
-
-            if (contador > 2) //Si hay más de 2 vehiculos iguales (esto es, con la misma placa), entonces añadir a lista de repetidos.
-                listaRepetidos.add(auxA);
         }
 
-        return Utils.arrayList_to_Array(listaRepetidos);
+        return listaMotos;
 
     }
-
 
     /**
-     * Método que retorna el número de motos que se han parqueado más de 3 veces en el parqueadero.
-     * @return Int con el numero de motos según la condición dada.
-     * @throws Exception Si hay algun NULL.
+     * Método que obtiene la lista
+     * @return
      */
-    private int obtenerNumMotosCond7() throws Exception {
+    private ArrayList<Vehiculo> obtenerListaVehiculosCondicion() {
 
+        int[] vehiculosRepetidos = new int[listaVehiculos.size()];
 
-        ArrayList<Vehiculo> listaRepetidos = new ArrayList<Vehiculo>();
+        for (RegistroParqueo registro:
+             listaRegistroParqueo) {
 
-        for (int i = 0; i < listaRegistroParqueo.size(); i++) {
+            Vehiculo vehiculoRegistro = registro.getVehiculo();
+            vehiculosRepetidos[listaVehiculos.indexOf(vehiculoRegistro)]++;
 
-            int contador = 1; //El contador inicia en uno porque siempre hay al menos una instancia del vehículo a comparar dentro del registro
-                                //incluso si esta instancia es nula (pues, pese a ello, existe).
-            Vehiculo auxA = listaRegistroParqueo.get(i).getVehiculo();
-
-
-
-            if (!existeVehiculoEnLista(listaRepetidos, auxA)) {
-
-                for (int j = 0; j < listaRegistroParqueo.size(); j++) {
-                    Vehiculo auxB = listaRegistroParqueo.get(i).getVehiculo();
-
-                    if (j != i) { //No podemos verificar un vehiculo de la posición X con su misma posición X, porque, aunque no esté repetido, pues se compará de forma innecesaria, y nos
-                                 // Engañará, diciéndonos que está "repetido".
-
-                        if (auxA != null && auxB != null) {
-                            if (auxA.getTipoVehiculo()== TipoVehiculo.MOTO && auxB.getTipoVehiculo() == TipoVehiculo.MOTO) { //verifica que los vehículos sean motos
-                                if (auxA.getPlaca() != null && auxB.getPlaca() != null) {
-
-                                    if (auxA.equals(auxB)) {
-                                        contador++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (contador > 3) //Si hay 3 vehiculos iguales (esto es, con la misma placa), entonces añadir a lista de repetidos.
-                listaRepetidos.add(auxA);
         }
 
-        return listaRepetidos.size();
+        return filtrarVehiculos(vehiculosRepetidos);
     }
 
+    private ArrayList<Vehiculo> filtrarVehiculos(int[] vehiculosRepetidos) {
 
+        ArrayList<Vehiculo> listaVehiculosCondicion = new ArrayList<>();
 
+        for (Vehiculo vehiculo:
+             listaVehiculos) {
 
-    /**
-     * Método que retornar la cantidad de carros que han parqueado más de dos veces en el parqueadero.
-     * NOTA: Recordar que el .equals de Vehículo compara únicamente por el valor de la placa y por el número asignado en memoria
-     *
-     * @return cantidad de carros que han parqueado más de dos veces en el parqueadero.
-     */
-    private int obtenerNumCarrosCond7() throws Exception {
-
-        ArrayList<Vehiculo> listaRepetidos = new ArrayList<Vehiculo>();
-
-        for (int i = 0; i < listaRegistroParqueo.size(); i++) {
-
-            int contador = 1; //El contador inicia en uno porque siempre hay al menos una instancia del vehículo a comparar dentro del registro
-            //incluso si esta instancia es nula (pues, pese a ello, existe).
-            Vehiculo auxA = listaRegistroParqueo.get(i).getVehiculo();
-
-
-
-            if (!existeVehiculoEnLista(listaRepetidos, auxA)) { //verificamos que ese vehículo NO se encuentre ya dentro de la lista de repetidos
-
-                for (int j = 0; j < listaRegistroParqueo.size(); j++) {
-                    Vehiculo auxB = listaRegistroParqueo.get(i).getVehiculo();
-
-                    if (j != i) { //No podemos verificar un vehiculo de la posición X con su misma posición X, porque, aunque no esté repetido, se compará de forma innecesaria, y nos
-                        // Engañará, diciéndonos que está "repetido".
-
-                        if (auxA != null && auxB != null) {
-                            if (auxA.getTipoVehiculo()== TipoVehiculo.CARRO && auxB.getTipoVehiculo() == TipoVehiculo.CARRO) { //verifica que los vehículos sean CARROS
-                                if (auxA.getPlaca() != null && auxB.getPlaca() != null) {
-
-                                    if (auxA.equals(auxB)) {
-                                        contador++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (contador > 2) //Si hay más de 2 vehiculos iguales (esto es, con la misma placa), entonces añadir a lista de repetidos.
-                listaRepetidos.add(auxA);
-        }
-
-        return listaRepetidos.size();
-    }
-
-
-    /**
-     * Método que verifica si dentro de una @lista existe el @vehiculo indicado.
-     * @param lista Lista a recorrer.
-     * @param vehiculo Vehiculo a buscar dentro de lista
-     * @return True si tal @vehiculo se encuentra dentro de la lista.
-     * @throws Exception Si la placa de @vehiculo es nula.
-     */
-    public boolean existeVehiculoEnLista(ArrayList<Vehiculo> lista, Vehiculo vehiculo) throws Exception {
-
-        if (vehiculo == null || lista == null)
-            throw new Exception("El vehiculo o la lista pasada es nula");
-
-
-        for (int i = 0; i < lista.size(); i++) {
-
-            if (vehiculo.equals(lista.get(i)))
-                return true;
-        }
-
-
-        return false;
-    }
-
-    ////////////////////////////////////    QUIZ ///////////////////////////////////////////
-    /*quiz: 10-05-2022
-     * obtener una matriz de vehiculos con las siguientes condiciones
-     * - una fila con los vehiculos de tipo carroo que tengan un modelo superiro a 2000
-     * - una fila con los vehiculos de tipo moto que el propietario sea robinson
-     */
-
-    public Vehiculo[][] obtenerMatriz() {
-        Vehiculo[][] matriz = new Vehiculo[2][];
-
-        Vehiculo[] fila1 = null;
-        Vehiculo[] fila2 = null;
-
-        fila1 = obtenerVehiculoModelo(2000);
-        fila2 = obtenerVehiculosPropietario("Robinson");
-
-        matriz[0] = fila1;
-        matriz[1] = fila2;
-
-        return matriz;
-    }
-
-    private Vehiculo[] obtenerVehiculosPropietario(String string) {
-
-
-        return null;
-    }
-
-    private Vehiculo[] obtenerVehiculoModelo(int modelo) {
-
-        Vehiculo[] vehiculo = new Vehiculo[obtenerCantidadVehiculosModelo(modelo)];
-        int cont = 0;
-        for (int i = 0; i < listaVehiculos.size(); i++) {
-            Vehiculo vehiculoAux = listaVehiculos.get(i);
-            if (vehiculoAux.verificarVehiculo(TipoVehiculo.CARRO, modelo)) {
-                vehiculo[cont] = vehiculoAux;
-                cont++;
+            if (vehiculo.getTipoVehiculo() == TipoVehiculo.CARRO && vehiculosRepetidos[listaVehiculos.indexOf(vehiculo)] > 2){
+                listaVehiculosCondicion.add(vehiculo);
+            } else if (vehiculo.getTipoVehiculo() == TipoVehiculo.MOTO && vehiculosRepetidos[listaVehiculos.indexOf(vehiculo)] > 3){
+                listaVehiculosCondicion.add(vehiculo);
             }
         }
 
-        return vehiculo;
+        return listaVehiculosCondicion;
     }
 
-    private int obtenerCantidadVehiculosModelo(int modelo) {
-        int cont = 0;
+//   ////////////////////////////////////    QUIZ ///////////////////////////////////////////
+//   /*quiz: 10-05-2022
+//    * obtener una matriz de vehiculos con las siguientes condiciones
+//    * - una fila con los vehiculos de tipo carroo que tengan un modelo superiro a 2000
+//    * - una fila con los vehiculos de tipo moto que el propietario sea robinson
+//    */
 
-        for (int i = 0; i < listaVehiculos.size(); i++) {
-            Vehiculo vehiculo = listaVehiculos.get(i);
-            if (vehiculo.verificarVehiculo(TipoVehiculo.CARRO, modelo)) {
-                cont++;
-            }
-        }
-        return cont;
-    }
+//   public Vehiculo[][] obtenerMatriz() {
+//       Vehiculo[][] matriz = new Vehiculo[2][];
+
+//       Vehiculo[] fila1 = null;
+//       Vehiculo[] fila2 = null;
+
+//       fila1 = obtenerVehiculoModelo(2000);
+//       fila2 = obtenerVehiculosPropietario("Robinson");
+
+//       matriz[0] = fila1;
+//       matriz[1] = fila2;
+
+//       return matriz;
+//   }
+
+//   private Vehiculo[] obtenerVehiculosPropietario(String string) {
 
 
-}
+//       return null;
+//   }
+
+//   private Vehiculo[] obtenerVehiculoModelo(int modelo) {
+
+//       Vehiculo[] vehiculo = new Vehiculo[obtenerCantidadVehiculosModelo(modelo)];
+//       int cont = 0;
+//       for (int i = 0; i < listaVehiculos.size(); i++) {
+//           Vehiculo vehiculoAux = listaVehiculos.get(i);
+//           if (vehiculoAux.verificarVehiculo(TipoVehiculo.CARRO, modelo)) {
+//               vehiculo[cont] = vehiculoAux;
+//               cont++;
+//           }
+//       }
+
+//       return vehiculo;
+//   }
+
+//   private int obtenerCantidadVehiculosModelo(int modelo) {
+//       int cont = 0;
+
+//       for (int i = 0; i < listaVehiculos.size(); i++) {
+//           Vehiculo vehiculo = listaVehiculos.get(i);
+//           if (vehiculo.verificarVehiculo(TipoVehiculo.CARRO, modelo)) {
+//               cont++;
+//           }
+//       }
+//       return cont;
+//   }
+
+
+ }

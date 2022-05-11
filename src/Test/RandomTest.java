@@ -24,9 +24,9 @@ public class RandomTest {
 
         Collections.addAll(parqueadero.getListaVehiculos(), v1,v2,v3,v4);
 
-        boolean bool = parqueadero.existeVehiculoEnLista(parqueadero.getListaVehiculos(), v5);
+        Vehiculo[][] vehiculos = parqueadero.obtenerMatrizCondicionPunto7();
 
-        System.out.println(bool);
+        System.out.println(vehiculos);
 
     }
 }

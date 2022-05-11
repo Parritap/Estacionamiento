@@ -1,0 +1,3 @@
+Cada vez que alguien se parquea, se genera un registro de ese parqueo.
+
+Entonces, si queremos saber cuantas veces se han parqueado, voy a la cantidad de registros del parqueadero.

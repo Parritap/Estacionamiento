@@ -1,6 +1,7 @@
 package model;
 
-public class Propietario {
+public class
+Propietario {
 
     private String nombre;
     private String identificacion;
