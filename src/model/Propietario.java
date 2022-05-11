@@ -3,13 +3,13 @@ package model;
 public class Propietario {
 
     private String nombre;
-    private String id;
+    private String identificacion;
     private String telefono;
     private Parqueadero parqueadero;
 
     public Propietario(String nombre, String id, String telefono, Parqueadero parqueadero) {
         this.nombre = nombre;
-        this.id = id;
+        this.identificacion = id;
         this.telefono = telefono;
         this.parqueadero = parqueadero;
     }
@@ -28,12 +28,12 @@ public class Propietario {
         this.nombre = nombre;
     }
 
-    public String getId() {
-        return id;
+    public String getIdentificacion() {
+        return identificacion;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 
     public String getTelefono() {
@@ -60,7 +60,7 @@ public class Propietario {
         Propietario that = (Propietario) o;
 
         if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (identificacion != null ? !identificacion.equals(that.identificacion) : that.identificacion != null) return false;
         if (telefono != null ? !telefono.equals(that.telefono) : that.telefono != null) return false;
         return parqueadero != null ? parqueadero.equals(that.parqueadero) : that.parqueadero == null;
     }
@@ -68,7 +68,7 @@ public class Propietario {
     @Override
     public int hashCode() {
         int result = nombre != null ? nombre.hashCode() : 0;
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (identificacion != null ? identificacion.hashCode() : 0);
         result = 31 * result + (telefono != null ? telefono.hashCode() : 0);
         result = 31 * result + (parqueadero != null ? parqueadero.hashCode() : 0);
         return result;
@@ -78,7 +78,7 @@ public class Propietario {
     public String toString() {
         return "Propietario{" +
                 "nombre='" + nombre + '\'' +
-                ", id='" + id + '\'' +
+                ", id='" + identificacion + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", parqueadero=" + parqueadero +
                 '}';

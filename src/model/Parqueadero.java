@@ -1,6 +1,6 @@
 package model;
 
-import Exceptions.StringException;
+import Exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ public class Parqueadero {
     private Puesto[][] listaPuestos;
     private ArrayList<RegistroParqueo> listaRegistroParqueo;
     private ArrayList<Vehiculo> listaVehiculos;
-    private ArrayList<Propietario> listaPropietario;
+    private ArrayList<Propietario> listaPropietarios;
 
     //Constructores
 
@@ -29,7 +29,7 @@ public class Parqueadero {
         this.listaPuestos = listaPuestos;
         this.listaRegistroParqueo = listaRegistroParqueo;
         this.listaVehiculos = listaVehiculos;
-        this.listaPropietario = listaPropietario;
+        this.listaPropietarios = listaPropietario;
     }
 
     /**
@@ -80,12 +80,12 @@ public class Parqueadero {
         this.listaVehiculos = listaVehiculos;
     }
 
-    public ArrayList<Propietario> getListaPropietario() {
-        return listaPropietario;
+    public ArrayList<Propietario> getListaPropietarios() {
+        return listaPropietarios;
     }
 
-    public void setListaPropietario(ArrayList<Propietario> listaPropietario) {
-        this.listaPropietario = listaPropietario;
+    public void setListaPropietarios(ArrayList<Propietario> listaPropietarios) {
+        this.listaPropietarios = listaPropietarios;
     }
 
 
@@ -102,7 +102,7 @@ public class Parqueadero {
             return false;
         if (listaVehiculos != null ? !listaVehiculos.equals(that.listaVehiculos) : that.listaVehiculos != null)
             return false;
-        return listaPropietario != null ? listaPropietario.equals(that.listaPropietario) : that.listaPropietario == null;
+        return listaPropietarios != null ? listaPropietarios.equals(that.listaPropietarios) : that.listaPropietarios == null;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Parqueadero {
         result = 31 * result + Arrays.deepHashCode(listaPuestos);
         result = 31 * result + (listaRegistroParqueo != null ? listaRegistroParqueo.hashCode() : 0);
         result = 31 * result + (listaVehiculos != null ? listaVehiculos.hashCode() : 0);
-        result = 31 * result + (listaPropietario != null ? listaPropietario.hashCode() : 0);
+        result = 31 * result + (listaPropietarios != null ? listaPropietarios.hashCode() : 0);
         return result;
     }
 
@@ -122,7 +122,7 @@ public class Parqueadero {
                 ", listaPuestos=" + Arrays.toString(listaPuestos) +
                 ", listaRegistroParqueadero=" + listaRegistroParqueo +
                 ", listaVehiculos=" + listaVehiculos +
-                ", listaPropietario=" + listaPropietario +
+                ", listaPropietario=" + listaPropietarios +
                 '}';
     }
 
@@ -155,8 +155,6 @@ public class Parqueadero {
 
         return matrizPuestos;
     }
-
-
 
 
     /**
@@ -206,48 +204,28 @@ public class Parqueadero {
 
 
     // PUNTO 2
-    public String crearVehiculo(Vehiculo nuevoVehiculo,String identificacionPropietario)throws VehiculoException {
-        String resultado 			= "";
+    public String crearVehiculo(Vehiculo nuevoVehiculo, String identificacionPropietario) throws VehiculoException {
+        String resultado = "";
         Vehiculo vehiculoEncontrado = null;
-        Propietario propietario 	= null;
+        Propietario propietario = null;
         // verificar si existe el vehiculo
         vehiculoEncontrado = buscarVehiculo(nuevoVehiculo.getPlaca()); //Primero buscamos si el vehiculo ya existe.
-        if(vehiculoEncontrado == null){ //De ser null, significa que el vehículo no fue encontrado, y podemos pasara crearlo.
+        if (vehiculoEncontrado == null) { //De ser null, significa que el vehículo no fue encontrado, y podemos pasara crearlo.
             // verificar si existe el propietario
             propietario = obtenerPropietario(identificacionPropietario);
-            if(propietario == null){
+            if (propietario == null) {
                 throw new VehiculoException("NO existe un propietario para este vehiculo");
-            }
-            else{
+            } else {
                 listaVehiculos.add(nuevoVehiculo);
                 resultado = "Vehiculo Registrado";
             }
-        }else{
+        } else {
             throw new VehiculoException("Este vehiculo ya se encunttra registrado");
         }
         return resultado;
     }
 
-    public Vehiculo buscarVehiculo(String placa) {
 
-        for (Vehiculo vehiculo : listaVehiculos) {
-            if (vehiculo.getPlaca() != null && vehiculo.getPlaca().equals(placa))
-                return vehiculo;
-        }
-        return null;
-    }
-
-    public void eliminarVehiculo(String placa) {
-
-        boolean bool = false; //Este bool se utiliza para romper el ciclo una vez hayamos encontrado el vehículo a eliminar.
-
-        for (int i = 0; i < listaVehiculos.size() && !bool; i++) {
-            if (listaVehiculos.get(i).getPlaca().equals(placa)) {
-                listaVehiculos.remove(i);
-                bool = true;
-            }
-        }
-    }
 
     public double obtenerSumaTotalesFila(int index) {
 
@@ -261,4 +239,89 @@ public class Parqueadero {
         }
         return sumaTotal;
     }
+
+
+    private Propietario obtenerPropietario(String identificacionPropietario) {
+
+        for (Propietario propietario : listaPropietarios) {
+            if (propietario != null && propietario.getIdentificacion().equals(identificacionPropietario)) {
+                return propietario;
+            }
+        }
+        return null;
+    }
+
+    private Vehiculo buscarVehiculo(String placa) {
+
+        for (Vehiculo vehiculo : listaVehiculos) {
+            if (vehiculo != null && vehiculo.getPlaca().equals(placa)) {
+                return vehiculo;
+            }
+        }
+
+        return null;
+    }
+
+//	1.0 Obtener una matriz con las siguientes condiciones: dos filas una
+//	fila para carros y otra para motos : en la primera fila se ubican
+//	los veh?culos de tipo carro que han parqueado m?s de dos veces
+//	en el parqueadero, en la segunda fila los veh?culos de tipo moto
+//	que han parqueado m?s de tres veces en el parqueadero.
+
+
+    //Realizar un método que retorne la suma de los valores cobrados(Recaudo total fila)
+    //en los Registros de una fila dada por el usuario correspondiente a la zona de parqueo.
+
+
+    //obtener un arrelo de vehiculos que sean de un modelo dado por el usuario
+
+
+    // obtener los propietarios de un un vehiculo que tenga una placa que termine en impar;
+
+
+    public String eliminarVehiculo(String placa) throws VehiculoException {
+
+        String mensaje = "";
+
+        for (Vehiculo vehiculo : listaVehiculos) {
+            if (vehiculo.getPlaca().equalsIgnoreCase(placa)) {
+                listaVehiculos.remove(vehiculo);
+                mensaje = "Vehiculo Eliminado";
+                break;
+            }
+        }
+
+        if (mensaje.equalsIgnoreCase("")) {
+            throw new VehiculoException("Vehiculo no se encuentra registardo");
+        }
+
+        return mensaje;
+
+
+    }
+
+    public String actualizarVehiculo(String placaAnterior, String placaNueva, String modeloNuevo,
+                                     TipoVehiculo tipoNuevo, String propietarioNuevo) throws VehiculoException {
+
+
+        Vehiculo vehiculo = buscarVehiculo(placaAnterior);
+
+        if (vehiculo != null) {
+            vehiculo.setPlaca(placaNueva);
+            vehiculo.setModelo(modeloNuevo);
+            vehiculo.setTipoVehiculo(tipoNuevo);
+
+            Propietario propietario = obtenerPropietario(propietarioNuevo);
+            if (propietario != null) {
+                vehiculo.setPropietario(propietario);
+            } else {
+                throw new VehiculoException("No hay propietario");
+            }
+        } else {
+            throw new VehiculoException("No hay vehiculo");
+        }
+        return "OK";
+    }
+
+
 }
