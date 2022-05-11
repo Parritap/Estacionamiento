@@ -25,6 +25,14 @@ public class Vehiculo {
     public Vehiculo() {
     }
 
+    /**
+     * Constructor con placa
+     * @param placa Placa del vehiculo.
+     */
+    public Vehiculo(String placa){
+        this.placa = placa;
+    }
+
     public String getPlaca() {
         return placa;
     }
