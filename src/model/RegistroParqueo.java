@@ -130,4 +130,14 @@ public class RegistroParqueo {
     }
 
 
+    ///////////////////////////////////////////         METODOS        ///////////////////////////////////////////
+
+
+    public Propietario obtenerPropietario() {
+
+        if (vehiculo!= null && vehiculo.getPropietario() != null && vehiculo.getPropietario().getNombre() != null ){
+            return vehiculo.getPropietario();
+        }
+        return null;
+    }
 }

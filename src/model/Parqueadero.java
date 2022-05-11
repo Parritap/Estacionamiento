@@ -4,6 +4,7 @@ import Exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Vector;
 
 public class Parqueadero {
 
@@ -226,7 +227,6 @@ public class Parqueadero {
     }
 
 
-
     public double obtenerSumaTotalesFila(int index) {
 
         double sumaTotal = 0;
@@ -323,5 +323,192 @@ public class Parqueadero {
         return "OK";
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    // PUNTO 5.
+    //5. Realizar un método que retorne la suma de los
+    //valores cobrados(Recaudo total fila) en los Registros
+    //de una fila dada por el usuario correspondiente a la zona de parqueo.
+
+    public double obtenerRecaudoTotal(int fila) throws Exception {
+
+        double total = 0;
+
+        if (fila < 0 || fila >= listaPuestos.length) {
+            throw new RuntimeException("La fila no es valida");
+        }
+
+        for (int columna = 0; columna < listaPuestos[fila].length; columna++) {
+            total += obtenerRegistrosFila(listaPuestos[fila][columna]);
+        }
+
+        return total;
+
+    }
+
+    private double obtenerRegistrosFila(Puesto puesto) {
+        double total = 0;
+
+        for (int i = 0; i < listaRegistroParqueo.size(); i++) {
+            RegistroParqueo registroParqueo = listaRegistroParqueo.get(i);
+            Puesto puestoParqueo = registroParqueo.getPuesto();
+            if (puestoParqueo == puesto) {
+                total += registroParqueo.getTotal();
+            }
+        }
+        return total;
+    }
+
+
+    //6. obtener los propietarios que han parqueado en la diagonal principal
+
+    public ArrayList<Propietario> obtenerPropietariosDiagonal() {
+        ArrayList<Propietario> listaPropietarios = new ArrayList<>();
+
+        for (int i = 0; i < listaPuestos.length; i++) {
+            for (int j = 0; j < listaPuestos.length; j++) {
+                if (i == j) {
+                    Puesto puesto = listaPuestos[i][j];
+                    listaPropietarios.addAll(obtenerPropietariosPuesto(puesto));
+                }
+            }
+        }
+        return listaPropietarios;
+    }
+
+    private ArrayList<Propietario> obtenerPropietariosPuesto(Puesto puesto) {
+        ArrayList<Propietario> listaPropietarios = new ArrayList<>();
+
+        for (int i = 0; i < listaRegistroParqueo.size(); i++) {
+            RegistroParqueo registroParqueo = listaRegistroParqueo.get(i);
+            Puesto puestoParqueo = registroParqueo.getPuesto();
+            if (puestoParqueo == puesto) {
+                listaPropietarios.add(registroParqueo.obtenerPropietario());
+
+            }
+        }
+
+        return listaPropietarios;
+    }
+
+
+    //PUNTO 8
+/*
+   Obtener una matriz con las siguientes condiciones: dos filas una fila para carros y otra para motos :
+   en la primera fila se ubican los vehículos de tipo carro que han parqueado más de dos veces en el parqueadero,
+   en la segunda fila los vehículos de tipo moto que han parqueado más de tres veces en el parqueadero.
+ */
+
+    private Vehiculo[][] obtenerMatrizCondicion7() {
+
+        Vehiculo[][] matrix = new Vehiculo[2][];
+
+        Vehiculo[] arregloCarros = new Vehiculo[obtenerNumCarrosCond7()];
+        Vehiculo[] arregloMotos = new Vehiculo[obtenerNumMotosCond7()];
+
+
+        return matrix;
+    }
+
+    private int obtenerNumMotosCond7() {
+
+
+        return 0;
+    }
+
+
+    /**
+     * Método que retornar la cantidad de carros que han parqueado más de dos veces en el parquedero.
+     *
+     * @return cantidad de carros que han parqueado más de dos veces en el parqueadero.
+     */
+    private int obtenerNumCarrosCond7() {
+
+        ArrayList<Vehiculo> listaRepetidos = new ArrayList<>(); //La idea es al final sacarle el .size() a esta lista, eso es lo que vamos a retornar
+
+        for (int i = 0; i < listaRegistroParqueo.size(); i++) {
+            Vehiculo auxA = listaRegistroParqueo.get(i).getVehiculo();
+
+            for (int j = 0; j < listaRegistroParqueo.size(); j++) {
+                Vehiculo auxB = listaRegistroParqueo.get(i).getVehiculo();
+
+                if (j != i) {
+                    if (auxA != null && auxB != null) {
+                        if (auxA.getPlaca() != null && auxB.getPlaca() != null) {
+
+                            if (auxA.equals(auxB) && !listaRepetidos.contains(auxA)) {
+                                listaRepetidos.add(auxA);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return listaRepetidos.size();
+    }
+
+    ////////////////////////////////////    QUIZ ///////////////////////////////////////////
+    /*quiz: 10-05-2022
+     * obtener una matriz de vehiculos con las siguientes condiciones
+     * - una fila con los vehiculos de tipo carroo que tengan un modelo superiro a 2000
+     * - una fila con los vehiculos de tipo moto que el propietario sea robinson
+     */
+
+    public Vehiculo[][] obtenerMatriz() {
+        Vehiculo[][] matriz = new Vehiculo[2][];
+
+        Vehiculo[] fila1 = null;
+        Vehiculo[] fila2 = null;
+
+        fila1 = obtenerVehiculoModelo(2000);
+        fila2 = obtenerVehiculosPropietario("Robinson");
+
+        matriz[0] = fila1;
+        matriz[1] = fila2;
+
+        return matriz;
+    }
+
+    private Vehiculo[] obtenerVehiculosPropietario(String string) {
+
+
+        return null;
+    }
+
+    private Vehiculo[] obtenerVehiculoModelo(int modelo) {
+
+        Vehiculo[] vehiculo = new Vehiculo[obtenerCantidadVehiculosModelo(modelo)];
+        int cont = 0;
+        for (int i = 0; i < listaVehiculos.size(); i++) {
+            Vehiculo vehiculoAux = listaVehiculos.get(i);
+            if (vehiculoAux.verificarVehiculo(TipoVehiculo.CARRO, modelo)) {
+                vehiculo[cont] = vehiculoAux;
+                cont++;
+            }
+        }
+
+        return vehiculo;
+    }
+
+    private int obtenerCantidadVehiculosModelo(int modelo) {
+        int cont = 0;
+
+        for (int i = 0; i < listaVehiculos.size(); i++) {
+            Vehiculo vehiculo = listaVehiculos.get(i);
+            if (vehiculo.verificarVehiculo(TipoVehiculo.CARRO, modelo)) {
+                cont++;
+            }
+        }
+        return cont;
+    }
+
+    
 
 }

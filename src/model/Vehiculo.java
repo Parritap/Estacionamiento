@@ -68,6 +68,7 @@ public class Vehiculo {
 
     //-------------------------------------------------------------------------------------------------------
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,13 +76,7 @@ public class Vehiculo {
 
         Vehiculo vehiculo = (Vehiculo) o;
 
-        if (placa != null ? !placa.equals(vehiculo.placa) : vehiculo.placa != null) return false;
-        if (modelo != null ? !modelo.equals(vehiculo.modelo) : vehiculo.modelo != null) return false;
-        if (propietario != null ? !propietario.equals(vehiculo.propietario) : vehiculo.propietario != null)
-            return false;
-        if (parqueadero != null ? !parqueadero.equals(vehiculo.parqueadero) : vehiculo.parqueadero != null)
-            return false;
-        return tipoVehiculo != null ? tipoVehiculo.equals(vehiculo.tipoVehiculo) : vehiculo.tipoVehiculo == null;
+        return placa.equals(vehiculo.placa);
     }
 
     @Override
