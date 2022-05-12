@@ -4,6 +4,8 @@ import Exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Parqueadero {
 
@@ -131,7 +133,7 @@ public class Parqueadero {
                 '}';
     }
 
-    //  PUNTO 1.--------------------------------------------------------------------------------
+
 
     public Puesto[][] generarPuestos(int cantidadColumnas) throws Exception {
 
@@ -208,7 +210,7 @@ public class Parqueadero {
     }
 
 
-    // PUNTO 2
+
     public String crearVehiculo(Vehiculo nuevoVehiculo, String identificacionPropietario) throws VehiculoException {
         String resultado = "";
         Vehiculo vehiculoEncontrado = null;
@@ -336,7 +338,7 @@ public class Parqueadero {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    // PUNTO 5.
+
     //5. Realizar un método que retorne la suma de los
     //valores cobrados(Recaudo total fila) en los Registros
     //de una fila dada por el usuario correspondiente a la zona de parqueo.
@@ -426,8 +428,8 @@ public class Parqueadero {
 
         ArrayList<Vehiculo> listaCarros = new ArrayList<>();
 
-        for (Vehiculo vehiculo:
-             obtenerListaVehiculosCondicion()) {
+        for (Vehiculo vehiculo :
+                obtenerListaVehiculosCondicion()) {
 
             if (vehiculo.getTipoVehiculo() == TipoVehiculo.CARRO) {
                 listaCarros.add(vehiculo);
@@ -437,11 +439,11 @@ public class Parqueadero {
         return listaCarros;
     }
 
-    private ArrayList<Vehiculo> obtenerListaMotosCond8(){
+    private ArrayList<Vehiculo> obtenerListaMotosCond8() {
 
         ArrayList<Vehiculo> listaMotos = new ArrayList<>();
 
-        for (Vehiculo vehiculo:
+        for (Vehiculo vehiculo :
                 obtenerListaVehiculosCondicion()) {
 
             if (vehiculo.getTipoVehiculo() == TipoVehiculo.MOTO) {
@@ -455,14 +457,15 @@ public class Parqueadero {
 
     /**
      * Método que obtiene la lista
+     *
      * @return
      */
     private ArrayList<Vehiculo> obtenerListaVehiculosCondicion() {
 
         int[] vehiculosRepetidos = new int[listaVehiculos.size()];
 
-        for (RegistroParqueo registro:
-             listaRegistroParqueo) {
+        for (RegistroParqueo registro :
+                listaRegistroParqueo) {
 
             Vehiculo vehiculoRegistro = registro.getVehiculo();
             vehiculosRepetidos[listaVehiculos.indexOf(vehiculoRegistro)]++;
@@ -476,12 +479,12 @@ public class Parqueadero {
 
         ArrayList<Vehiculo> listaVehiculosCondicion = new ArrayList<>();
 
-        for (Vehiculo vehiculo:
-             listaVehiculos) {
+        for (Vehiculo vehiculo :
+                listaVehiculos) {
 
-            if (vehiculo.getTipoVehiculo() == TipoVehiculo.CARRO && vehiculosRepetidos[listaVehiculos.indexOf(vehiculo)] > 2){
+            if (vehiculo.getTipoVehiculo() == TipoVehiculo.CARRO && vehiculosRepetidos[listaVehiculos.indexOf(vehiculo)] > 2) {
                 listaVehiculosCondicion.add(vehiculo);
-            } else if (vehiculo.getTipoVehiculo() == TipoVehiculo.MOTO && vehiculosRepetidos[listaVehiculos.indexOf(vehiculo)] > 3){
+            } else if (vehiculo.getTipoVehiculo() == TipoVehiculo.MOTO && vehiculosRepetidos[listaVehiculos.indexOf(vehiculo)] > 3) {
                 listaVehiculosCondicion.add(vehiculo);
             }
         }
@@ -545,4 +548,194 @@ public class Parqueadero {
 //   }
 
 
- }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    ///Parcial Pramación
+
+    public boolean existeVehiculoEnLista(ArrayList<Vehiculo> lista, Vehiculo vehiculo) throws Exception {
+
+        if (vehiculo == null || lista == null)
+            throw new Exception("El vehiculo o la lista pasada es nula");
+
+
+        for (int i = 0; i < lista.size(); i++) {
+
+            if (vehiculo.equals(lista.get(i)))
+                return true;
+        }
+
+
+        return false;
+    }
+
+
+    //PARCIAL PUNTO 1: DADA MI EQUIVOCACIÓN, HICE EL PRIMER PUNTO DE UN PARCIAL DIFERENTE, PERO LOS DEMÁS 3 PUNTOS SON DEL MISMO PARCIAL.
+    public Vehiculo[][] obtenerMatrizParcialPunto1() throws Exception {
+
+        Vehiculo[][] matrix = new Vehiculo[2][];
+
+        matrix[0] = (Vehiculo[]) generarMatrizVehiculoMatrizFechaYTotal(TipoVehiculo.MOTO, "06-06-22", 10000).toArray();
+        matrix[1] = (Vehiculo[]) generarMatrizVehiculoNombreVocales().toArray();
+
+        return matrix;
+    }
+
+    private ArrayList<Vehiculo> generarMatrizVehiculoNombreVocales() throws Exception {
+
+        ArrayList<Vehiculo> listaCondicion = new ArrayList<Vehiculo>();
+
+        for (Vehiculo v : listaVehiculos
+        ) {
+
+            if (v != null && v.getTipoVehiculo() == TipoVehiculo.CARRO && v.getPropietario() != null && v.getPropietario().getNombre() != null) {
+
+                String nombProp = v.getPropietario().getNombre();
+                if (tieneTresVocales(nombProp) && !existeVehiculoEnLista(listaCondicion, v))
+                    listaCondicion.add(v);
+            }
+
+        }
+
+        return listaCondicion;
+    }
+
+    private boolean tieneTresVocales(String nombProp) {
+
+        char[] vocales = "aeiouAEIOU".toCharArray();
+        ArrayList<Character> vocalesEncontradas = new ArrayList<>();
+
+        for (int i = 0; i < nombProp.length(); i++) {
+
+            for (char vocal : vocales) {
+
+                if (nombProp.charAt(i) == vocal && !vocalesEncontradas.contains(vocal)) {
+                    vocalesEncontradas.add(vocales[i]);
+                }
+            }
+        }
+
+
+        return vocalesEncontradas.size() >= 3;
+    }
+
+    private ArrayList<Vehiculo> generarMatrizVehiculoMatrizFechaYTotal(TipoVehiculo tipoVehiculo, String fecha, double totalParqueo) throws Exception {
+
+        ArrayList<Vehiculo> listaCondicion = new ArrayList<Vehiculo>();
+
+        for (RegistroParqueo registro : listaRegistroParqueo
+        ) {
+
+            if (listaRegistroParqueo != null && registro != null && registro.getFecha()!=null ) {
+
+                String fechaRegis = registro.getFecha();
+                double totalRegis = registro.getTotal();
+
+                if (fechaRegis != null && fechaRegis.equals(fecha) && totalRegis > totalParqueo) {
+                    Vehiculo auxVehiculo = registro.getVehiculo();
+
+                    if (auxVehiculo != null && auxVehiculo.getTipoVehiculo() == tipoVehiculo && !existeVehiculoEnLista(listaCondicion, auxVehiculo)) {
+                        listaCondicion.add(auxVehiculo);
+                    }
+                }
+            }
+        }
+
+        return listaCondicion;
+    }
+
+
+    // PARCIAL PUNTO 2
+    public ArrayList<Puesto> obtenerPuestosCondicionParcialPunto2(String estadoPuesto, TipoVehiculo tipoVehiculo) {
+
+        ArrayList<Puesto> listaPuestosCondicion = new ArrayList<>();
+
+        for (int i = 0; i == 0 || i == listaPuestos.length - 1; i++) {  //Se me olvidó poner un auxiliar para que no quedara tan largo esto.
+            for (int j = 0; j == 0 || j == listaPuestos[i].length - 1; j++) {
+
+                if (listaPuestos[i][j] != null && listaPuestos[i][j].getEstado() != null && listaPuestos[i][j].getEstado().equals(estadoPuesto)) {  // Que según el enunciado, el estado dería ser "ocupado".
+
+                    if (listaPuestos[i][j].getTipoVehiculo() == tipoVehiculo && !listaPuestosCondicion.contains(listaPuestos[i][j]))
+                        listaPuestosCondicion.add(listaPuestos[i][j]);
+
+                }
+            }
+        }
+        return listaPuestosCondicion;
+    }
+
+
+    //PARCIAL PUNTO 3
+    public Propietario[] obtenerPropiertariosCondicionParcialPunto3(TipoVehiculo tipoVehiculo) {
+
+        ArrayList<Propietario> listaPropCondicion = new ArrayList<>();
+
+        for (Vehiculo v : listaVehiculos
+        ) {
+            if (v != null && v.getPropietario().getNombre()!=null){
+                String nombreProp = v.getPropietario().getNombre();
+
+                if (esCapicua(nombreProp) && v.getTipoVehiculo() == tipoVehiculo && !listaPropCondicion.contains(v.getPropietario()))
+                    listaPropCondicion.add(v.getPropietario());
+
+            }
+        }
+
+        return toArray(listaPropCondicion);
+    }
+
+    private Propietario[] toArray(ArrayList<Propietario> lista) {
+
+        Propietario[] array = new Propietario[lista.size()];
+
+        for (int i = 0; i < array.length ; i++) {
+
+            array[i] = lista.get(i);
+        }
+        return  array;
+    }
+
+    private boolean esCapicua(String nombreProp) {
+
+        char[] charArray = nombreProp.toCharArray();
+
+        boolean condicion = true;
+        for (int i = 0, j=charArray.length-1; i < charArray.length/2; i++, j--) {
+
+            if (charArray[i] != charArray[j]) {
+                condicion = false;
+                break;
+            }
+        }
+        return condicion;
+    }
+
+
+    //PARCIAL PUNTO 4
+    public ArrayList<Propietario> obtenerPropietarioModelo(){
+
+
+        ArrayList<Propietario> listaPropietarios = new ArrayList<>();
+
+        for (int i = 0; i < this.listaVehiculos.size(); i++) {
+            Vehiculo vehiculo = listaVehiculos.get(i);
+            if(vehiculo.verificarModeloPropietario()){
+                listaPropietarios.add(vehiculo.getPropietario());
+
+
+            }
+
+        }
+
+
+        return listaPropietarios;
+
+    }
+
+
+}
