@@ -84,4 +84,12 @@ Propietario {
                 ", parqueadero=" + parqueadero +
                 '}';
     }
+    //PARCIAL PUNTO 4
+
+    //PARCIAL PUNTO 4
+    public boolean verificarNombre2(String string) {
+        return nombre.equals("Diana");
+    }
+
+
 }

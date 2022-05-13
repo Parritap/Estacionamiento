@@ -108,5 +108,40 @@ public class Vehiculo {
                 '}';
     }
 
+    //PARCIAL PUNTO 4
+    public boolean verificarModeloPropietario() {
+        boolean verificarNombreP;
+        boolean verificarModeloM;
+        verificarNombreP = verificarNombre ("Diana");
+        verificarModeloM = verificarModeloM(2000);
+
+        if(verificarNombreP && verificarModeloM){
+            return true;
+        }
+
+
+        return false;
+    }
+
+    public boolean verificarNombre(String string) {
+
+        if(propietario != null && propietario.verificarNombre2(string)){
+            return true;
+        }
+
+        return false;
+
+    }
+
+
+    private boolean verificarModeloM(int modelo) {
+        String auxModelo = getModelo();
+        int modeloVehiculo = Integer.valueOf(auxModelo);
+        if(modeloVehiculo > modelo){
+            return true;
+        }
+        return false;
+    }
+
     //------------------------------------------------------------------------------------------------------------
 }
