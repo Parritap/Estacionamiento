@@ -86,8 +86,6 @@ public class Puesto {
         Puesto puesto = (Puesto) o;
 
         if (num != null ? !num.equals(puesto.num) : puesto.num != null) return false;
-        if (estado != null ? !estado.equals(puesto.estado) : puesto.estado != null) return false;
-        if (precio != null ? !precio.equals(puesto.precio) : puesto.precio != null) return false;
         if (parqueadero != null ? !parqueadero.equals(puesto.parqueadero) : puesto.parqueadero != null) return false;
         return tipoVehiculo == puesto.tipoVehiculo;
     }

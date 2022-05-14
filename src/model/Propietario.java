@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class
 Propietario {
 
@@ -91,5 +93,21 @@ Propietario {
         return nombre.equals("Diana");
     }
 
+
+    /**
+     * Convierte un ArrayList de tipo Propietario a un arreglo de tipo Propietario.
+     * @param lista Lista a convertir.
+     * @return Arreglo.
+     */
+    public static Propietario[] toArray(ArrayList<Propietario> lista) {
+
+        Propietario[] array = new Propietario[lista.size()];
+
+        for (int i = 0; i < array.length; i++) {
+
+            array[i] = lista.get(i);
+        }
+        return array;
+    }
 
 }
